@@ -18,7 +18,7 @@ A minimalist link‑saving and sharing app built with Vite, React and a Node.js 
 
 ###API Endpoints
 
-- Base URL: http://localhost:5000/api
+- Base URL: http://localhost:3000/api
 - POST /auth/signup – register new user
 - POST /auth/signin – login and receive JWT
 - GET /links – retrieve user’s saved links
