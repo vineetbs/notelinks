@@ -8,14 +8,16 @@ import { BackendUrl } from "../config";
 interface contentProp {
   open: boolean;
   onClose: () => void;
+  onContentAdd: () => void;
 }
 
 enum contentType {
   YouTube = "youtube",
   Twitter = "twitter",
+  Instagram = "instagram",
 }
 
-export const CreateContent = ({ open, onClose }: contentProp) => {
+export const CreateContent = ({ open, onClose, onContentAdd }: contentProp) => {
   const [type, setType] = useState(contentType.YouTube);
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
@@ -23,7 +25,7 @@ export const CreateContent = ({ open, onClose }: contentProp) => {
   const addContent = async () => {
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
-    console.log(localStorage.getItem("token"));
+    // console.log(localStorage.getItem("token"));
 
     await axios.post(
       BackendUrl + "/api/v1/content",
@@ -38,6 +40,7 @@ export const CreateContent = ({ open, onClose }: contentProp) => {
         },
       }
     );
+    onContentAdd();
     onClose();
   };
   return (
@@ -45,25 +48,40 @@ export const CreateContent = ({ open, onClose }: contentProp) => {
       {open && (
         <div>
           <div className="w-screen h-screen top-0 right-0 bg-slate-700/80 fixed flex flex-row min-h-screen justify-center items-center">
-            <div className="bg-white  w-64 rounded">
+            <div className="[background-color:var(--color-secbg)]  w-84 h-96 rounded-xl">
               <div className="flex justify-between">
-                <div className="text-xl font-semibold p-4">Add content</div>
-                <div className="pt-4 pr-2 cursor-pointer" onClick={onClose}>
+                <div className="text-xl font-semibold p-4 ml-18">
+                  Add Content
+                </div>
+                <div
+                  className="pt-4 pr-2 cursor-pointer hover:bg-gray-300 rounded-xl "
+                  onClick={onClose}
+                >
                   <CloseIcon />
                 </div>
               </div>
-              <InputBox placeholder="Title" reference={titleRef} />
-              <InputBox placeholder="Link" reference={linkRef} />
-              <div className="font-semibold pt-1 flex items-center justify-center">
+              <div className="pt-4">
+                <InputBox placeholder="Title" reference={titleRef} />
+                <InputBox placeholder="Link" reference={linkRef} />
+              </div>
+
+              <div className="font-semibold pt-6 flex items-center justify-center">
                 Type
               </div>
-              <div className="flex items-center justify-items-center m-2 p-2 pl-8 ">
+              <div className="flex items-center justify-items-center  pb-6 pl-6 ">
                 <Button
                   title="Youtube"
                   variant={
                     type === contentType.YouTube ? "primary" : "secondary"
                   }
                   onClick={() => setType(contentType.YouTube)}
+                />
+                <Button
+                  title="Instagram"
+                  variant={
+                    type === contentType.Instagram ? "primary" : "secondary"
+                  }
+                  onClick={() => setType(contentType.Instagram)}
                 />
                 <Button
                   title="Twitter"
@@ -73,9 +91,12 @@ export const CreateContent = ({ open, onClose }: contentProp) => {
                   onClick={() => setType(contentType.Twitter)}
                 />
               </div>
-
-              <div className="flex items-center justify-center">
-                <Button variant="primary" title="Add" onClick={addContent} />
+              <div className="flex items-center justify-center pt-1 pb-2 ">
+                <Button
+                  variant="primary"
+                  title="Add Content"
+                  onClick={addContent}
+                />
               </div>
             </div>
           </div>

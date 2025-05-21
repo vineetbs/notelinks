@@ -1,9 +1,13 @@
 import { Schema } from "mongoose";
 import mongoose from "mongoose";
-
-const url = "mongodb+srv://vineet:vineet123@cluster0.t0w7x.mongodb.net/noteApp";
-
-mongoose.connect(url).then(() => console.log("db connected"));
+import dotenv from "dotenv";
+dotenv.config();
+const url = process.env.MONGO_URL!;
+try {
+  mongoose.connect(url).then(() => console.log("db connected"));
+} catch (e) {
+  console.log(e);
+}
 
 const userSchema = new Schema({
   username: {

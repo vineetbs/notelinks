@@ -75,46 +75,52 @@ app.delete("/api/v1/content", middleware_1.authMiddleware, (req, res) => __await
     const contentId = req.body.contentId;
     //@ts-ignore
     const userId = req.userId;
-    yield db_1.Content.deleteMany({
-        contentId,
+    yield db_1.Content.deleteOne({
+        _id: contentId,
         userId,
     });
     res.json("deleted");
 }));
-app.post("/api/v1/brain/share", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/api/v1/note/share", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //@ts-ignore
-    const share = req.body.share;
-    if (share) {
-        const existingLink = yield db_1.Link.findOne({
-            //@ts-ignore
-            userId: req.userId,
-        });
-        if (existingLink) {
+    try {
+        const share = req.body.share;
+        if (share) {
+            const existingLink = yield db_1.Link.findOne({
+                //@ts-ignore
+                userId: req.userId,
+            });
+            if (existingLink) {
+                res.json({
+                    hash: existingLink.hash,
+                });
+                return;
+            }
+            const hash = (0, utility_1.default)(10);
+            yield db_1.Link.create({
+                //@ts-ignore
+                userId: req.userId,
+                hash,
+            });
             res.json({
-                hash: existingLink.hash,
+                hash,
             });
         }
-        const hash = (0, utility_1.default)(10);
-        yield db_1.Link.create({
-            //@ts-ignore
-            userId: req.userId,
-            hash,
-        });
-        res.json({
-            hash,
-        });
+        else {
+            yield db_1.Link.deleteOne({
+                //@ts-ignore
+                userId: req.userId,
+            });
+            res.json({
+                message: "link deleted",
+            });
+        }
     }
-    else {
-        db_1.Link.deleteOne({
-            //@ts-ignore
-            userId: req.userId,
-        });
-        res.json({
-            message: "link deleted",
-        });
+    catch (error) {
+        console.log(error);
     }
 }));
-app.get("/api/v1/brain/:sharelink", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/api/v1/note/:sharelink", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const hash = req.params.sharelink;
     const link = yield db_1.Link.findOne({
         hash,
@@ -128,10 +134,10 @@ app.get("/api/v1/brain/:sharelink", (req, res) => __awaiter(void 0, void 0, void
     const user = yield db_1.User.findOne({
         _id: link.userId,
     });
-    const content = yield db_1.Content.findOne({
+    const content = yield db_1.Content.find({
         userId: link.userId,
     });
-    console.log(content);
+    // console.log(content);
     res.json({
         username: user === null || user === void 0 ? void 0 : user.username,
         content: content,

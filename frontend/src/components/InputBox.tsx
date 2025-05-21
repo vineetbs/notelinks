@@ -9,7 +9,7 @@ export const InputBox = ({ placeholder, reference }: InputProps) => {
       <input
         type="text"
         placeholder={placeholder}
-        className="m-1 p-3 rounded border border-slate-500 px-2  "
+        className="m-1 p-3 rounded border border-slate-500 px-2 bg-white "
         ref={reference}
       />
     </div>

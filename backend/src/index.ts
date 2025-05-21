@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+interface req extends Request {
+  userId: string;
+}
+
 app.post("/api/v1/signup", async (req, res) => {
   const { username, password } = req.body;
 
@@ -66,8 +70,8 @@ app.delete("/api/v1/content", authMiddleware, async (req, res) => {
   const contentId = req.body.contentId;
   //@ts-ignore
   const userId = req.userId;
-  await Content.deleteMany({
-    contentId,
+  await Content.deleteOne({
+    _id: contentId,
     userId,
   });
   res.json("deleted");
@@ -76,36 +80,41 @@ app.delete("/api/v1/content", authMiddleware, async (req, res) => {
 app.post("/api/v1/note/share", authMiddleware, async (req, res) => {
   //@ts-ignore
 
-  const share = req.body.share;
+  try {
+    const share = req.body.share;
 
-  if (share) {
-    const existingLink = await Link.findOne({
-      //@ts-ignore
-      userId: req.userId,
-    });
-    if (existingLink) {
+    if (share) {
+      const existingLink = await Link.findOne({
+        //@ts-ignore
+        userId: req.userId,
+      });
+      if (existingLink) {
+        res.json({
+          hash: existingLink.hash,
+        });
+        return;
+      }
+      const hash = random(10);
+      await Link.create({
+        //@ts-ignore
+        userId: req.userId,
+        hash,
+      });
+
       res.json({
-        hash: existingLink.hash,
+        hash,
+      });
+    } else {
+      await Link.deleteOne({
+        //@ts-ignore
+        userId: req.userId,
+      });
+      res.json({
+        message: "link deleted",
       });
     }
-    const hash = random(10);
-    await Link.create({
-      //@ts-ignore
-      userId: req.userId,
-      hash,
-    });
-
-    res.json({
-      hash,
-    });
-  } else {
-    Link.deleteOne({
-      //@ts-ignore
-      userId: req.userId,
-    });
-    res.json({
-      message: "link deleted",
-    });
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -125,11 +134,11 @@ app.get("/api/v1/note/:sharelink", async (req, res) => {
     _id: link.userId,
   });
 
-  const content = await Content.findOne({
+  const content = await Content.find({
     userId: link.userId,
   });
 
-  console.log(content);
+  // console.log(content);
 
   res.json({
     username: user?.username,

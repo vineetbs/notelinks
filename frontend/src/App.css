@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-pribg: #fefeff;
+    --color-secbg: #f1f5f9;
+    --color-prifg: #0e0f23;
+    --color-secfg: #757179;
+    --color-terfg: #f9fafb;
+  }
+
+  /* Set default background color for entire app */
+  html,
+  body {
+    background-color: var(--color-pribg);
+  }
+}

@@ -1,1 +1,2 @@
-export const BackendUrl = "http://localhost:3000";
+export const BackendUrl = import.meta.env.VITE_BE_URL;
+export const FrontendUrl = import.meta.env.VITE_FE_URL;

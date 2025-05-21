@@ -4,8 +4,7 @@ import { BackendUrl } from "../config";
 
 export const Usecontent = () => {
   const [content, setContent] = useState([]);
-
-  useEffect(() => {
+  const fetchBe = () => {
     axios
       .get(BackendUrl + "/api/v1/content", {
         headers: {
@@ -13,6 +12,9 @@ export const Usecontent = () => {
         },
       })
       .then((response) => setContent(response.data));
+  };
+  useEffect(() => {
+    fetchBe();
   }, []);
-  return content;
+  return { content, fetchBe };
 };

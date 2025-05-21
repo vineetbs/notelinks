@@ -3,7 +3,7 @@ import { Button } from "../components/Button";
 import { InputBox } from "../components/InputBox";
 import axios from "axios";
 import { BackendUrl } from "../config";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signin = () => {
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ export const Signin = () => {
 
   return (
     <div className="flex items-center justify-center h-screen w-screen  flex-row bg-gray-500/70">
-      <div className="bg-white rounded-xl  h-64 w-64">
-        <div className="text-2xl justify-center  flex p-6">Sign in</div>
+      <div className="bg-white rounded-xl  h-80 w-70">
+        <div className="text-2xl justify-center  flex p-5">Sign in</div>
         <InputBox placeholder="Enter username" reference={usernameRef} />
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
@@ -38,6 +38,15 @@ export const Signin = () => {
             loading={false}
             onClick={signin}
           />
+        </div>
+        <div className="flex justify-center">
+          <div className=""> New here? </div>
+          <Link
+            to={"/signup"}
+            className="text-blue-600 pl-2 underline-offset-1 underline"
+          >
+            Signup
+          </Link>
         </div>
       </div>
     </div>

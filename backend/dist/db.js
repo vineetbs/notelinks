@@ -6,8 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Content = exports.Tag = exports.User = exports.Link = void 0;
 const mongoose_1 = require("mongoose");
 const mongoose_2 = __importDefault(require("mongoose"));
-const url = "mongodb+srv://vineet:vineet123@cluster0.t0w7x.mongodb.net/noteApp";
-mongoose_2.default.connect(url).then(() => console.log("db connected"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const url = process.env.MONGO_URL;
+try {
+    mongoose_2.default.connect(url).then(() => console.log("db connected"));
+}
+catch (e) {
+    console.log(e);
+}
 const userSchema = new mongoose_1.Schema({
     username: {
         type: String,

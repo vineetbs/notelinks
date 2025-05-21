@@ -9,8 +9,8 @@ interface ButtonProps {
 }
 
 const variantClass = {
-  primary: "bg-blue-800 text-white",
-  secondary: "bg-purple-200 text-purple-800",
+  primary: "[background-color:var(--color-prifg)] text-white",
+  secondary: "[background-color:var(--color-secfg)] text-white",
 };
 
 const defaultStyles = "p-2 m-2 rounded-xl text-md flex items-center";
