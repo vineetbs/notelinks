@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../components/Button";
 import { InputBox } from "../components/InputBox";
 import axios from "axios";
@@ -9,8 +9,9 @@ export const Signin = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const [submitting, setsubmitting] = useState(false);
   const signin = async () => {
+    setsubmitting(true);
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(username);
@@ -20,8 +21,8 @@ export const Signin = () => {
     });
 
     const jwt = response.data;
-
     localStorage.setItem("token", jwt);
+    setsubmitting(false);
     navigate("/dashboard");
   };
 
@@ -33,9 +34,9 @@ export const Signin = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title="Sign in"
+            title={submitting ? "Signing in..." : "Sign in"}
             variant="primary"
-            loading={false}
+            loading={submitting}
             onClick={signin}
           />
         </div>

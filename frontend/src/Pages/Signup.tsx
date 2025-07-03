@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../components/Button";
 import { InputBox } from "../components/InputBox";
 import axios from "axios";
@@ -9,15 +9,16 @@ export const Signup = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const [submitting, setsubmitting] = useState(false);
   const signup = async () => {
+    setsubmitting(true);
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     await axios.post(BackendUrl + "/api/v1/signup", {
       username,
       password,
     });
-
+    setsubmitting(false);
     navigate("/signin");
   };
   return (
@@ -28,9 +29,9 @@ export const Signup = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title="Sign up"
+            title={submitting ? "Signing up..." : "Sign up"}
             variant="primary"
-            loading={false}
+            loading={submitting}
             onClick={signup}
           />
         </div>
