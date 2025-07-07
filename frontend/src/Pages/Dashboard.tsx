@@ -7,15 +7,17 @@ import { Sidebar } from "../components/Sidebar";
 import { useEffect, useState } from "react";
 import { Usecontent } from "../hooks/Usecontent";
 import { ShareContent } from "../components/ShareContent";
+import { MoonLoader } from "react-spinners";
 
 export const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
-  const { content, fetchBe } = Usecontent();
+  const { content, fetchBe, loading, error } = Usecontent();
   const [filterContent, setfilterContent] = useState(content);
   useEffect(() => {
     setfilterContent(content);
   }, [content]);
+
   return (
     <div className="flex">
       <div className="sm:w-56 w-20 ">
@@ -54,7 +56,22 @@ export const Dashboard = () => {
         )}
 
         <div className="pt-8">
-          {filterContent.length > 0 ? (
+          {error ? (
+            <div
+              className="flex justify-center items-center h-screen gap-4
+            "
+            >
+              Error while fetching data
+            </div>
+          ) : loading ? (
+            <div
+              className="flex justify-center items-center h-screen gap-4
+            "
+            >
+              <MoonLoader />
+              Loading...
+            </div>
+          ) : filterContent.length > 0 ? (
             <div className="grid md:grid-cols-3 grid-cols-1 sm:grid-cols-2 overflow-y-auto">
               {filterContent.map(({ type, title, link, _id }) => (
                 <Card

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../components/Button";
 import { InputBox } from "../components/InputBox";
 import axios from "axios";
@@ -9,20 +9,25 @@ export const Signin = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const [loading, setloading] = useState(false);
   const signin = async () => {
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(username);
-    const response = await axios.post(BackendUrl + "/api/v1/signin", {
-      username,
-      password,
-    });
 
-    const jwt = response.data;
-
-    localStorage.setItem("token", jwt);
-    navigate("/dashboard");
+    try {
+      setloading(true);
+      const response = await axios.post(BackendUrl + "/api/v1/signin", {
+        username,
+        password,
+      });
+      const jwt = response.data;
+      localStorage.setItem("token", jwt);
+      navigate("/dashboard");
+    } catch (error) {
+      window.alert("Invalid Username or Password");
+    } finally {
+      setloading(false);
+    }
   };
 
   return (
@@ -33,9 +38,9 @@ export const Signin = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title="Sign in"
+            title={loading ? "loading..." : "Sign in"}
             variant="primary"
-            loading={false}
+            loading={loading}
             onClick={signin}
           />
         </div>
