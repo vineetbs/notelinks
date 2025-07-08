@@ -29,10 +29,7 @@ export const Signin = () => {
       window.alert("Invalid Username or Password");
     } finally {
       setloading(false);
-    };
-    
-
-   
+    }
   };
 
   return (
@@ -43,11 +40,9 @@ export const Signin = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-
             title={loading ? "loading..." : "Sign in"}
             variant="primary"
             loading={loading}
-
             onClick={signin}
           />
         </div>
