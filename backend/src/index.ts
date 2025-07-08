@@ -147,4 +147,9 @@ app.get("/api/v1/note/:sharelink", async (req, res) => {
   return;
 });
 
+app.get("/health", (req, res) => {
+  console.log("Cron job executed at", new Date().toISOString());
+  res.status(200).send("Server is alive!");
+});
+
 app.listen(port, () => console.log("server started"));
