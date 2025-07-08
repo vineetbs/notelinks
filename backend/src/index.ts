@@ -5,7 +5,7 @@ import { secret } from "./config";
 import { authMiddleware } from "./middleware";
 import random from "./utility";
 import cors from "cors";
-
+const port = process.env.PORT || 4000;
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -147,4 +147,4 @@ app.get("/api/v1/note/:sharelink", async (req, res) => {
   return;
 });
 
-app.listen(3000, () => console.log("server started"));
+app.listen(port, () => console.log("server started"));
