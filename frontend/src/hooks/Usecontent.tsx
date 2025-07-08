@@ -4,17 +4,27 @@ import { BackendUrl } from "../config";
 
 export const Usecontent = () => {
   const [content, setContent] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [error, setError] = useState(false);
   const fetchBe = () => {
-    axios
-      .get(BackendUrl + "/api/v1/content", {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => setContent(response.data));
+    try {
+      axios
+        .get(BackendUrl + "/api/v1/content", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          setContent(response.data);
+          setloading(false);
+        });
+    } catch (error) {
+      setError(true);
+    }
   };
   useEffect(() => {
+    setloading(true);
     fetchBe();
   }, []);
-  return { content, fetchBe };
+  return { content, fetchBe, error, loading };
 };

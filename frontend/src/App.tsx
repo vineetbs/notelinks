@@ -12,6 +12,10 @@ function App() {
     const token = localStorage.getItem("token");
     return token ? children : <Navigate to="/" />;
   };
+  const AuthRoute = ({ children }: any) => {
+    const token = localStorage.getItem("token");
+    return !token ? children : <Navigate to="/dashboard" />;
+  };
 
   return (
     <>
@@ -26,8 +30,22 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="signup" element={<Signup />} />
-          <Route path="signin" element={<Signin />} />
+          <Route
+            path="signup"
+            element={
+              <AuthRoute>
+                <Signup />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="signin"
+            element={
+              <AuthRoute>
+                <Signin />
+              </AuthRoute>
+            }
+          />
           <Route path="note/*" element={<SharePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

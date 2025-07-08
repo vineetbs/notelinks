@@ -9,21 +9,30 @@ export const Signin = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const [submitting, setsubmitting] = useState(false);
+
+  const [loading, setloading] = useState(false);
+
   const signin = async () => {
-    setsubmitting(true);
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(username);
-    const response = await axios.post(BackendUrl + "/api/v1/signin", {
-      username,
-      password,
+
+    try {
+      setloading(true);
+      const response = await axios.post(BackendUrl + "/api/v1/signin", {
+        username,
+        password,
+      });
+      const jwt = response.data;
+      localStorage.setItem("token", jwt);
+      navigate("/dashboard");
+    } catch (error) {
+      window.alert("Invalid Username or Password");
+    } finally {
+      setloading(false);
+    }
     });
 
-    const jwt = response.data;
-    localStorage.setItem("token", jwt);
-    setsubmitting(false);
-    navigate("/dashboard");
+   
   };
 
   return (
@@ -34,9 +43,11 @@ export const Signin = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title={submitting ? "Signing in..." : "Sign in"}
+
+            title={loading ? "loading..." : "Sign in"}
             variant="primary"
-            loading={submitting}
+            loading={loading}
+
             onClick={signin}
           />
         </div>

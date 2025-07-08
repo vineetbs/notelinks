@@ -9,39 +9,50 @@ export const Signup = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const [submitting, setsubmitting] = useState(false);
+
+  const [loading, setloading] = useState(false);
   const signup = async () => {
-    setsubmitting(true);
+    setloading(true);
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    await axios.post(BackendUrl + "/api/v1/signup", {
-      username,
-      password,
-    });
-    setsubmitting(false);
-    navigate("/signin");
+    try {
+      await axios.post(BackendUrl + "/api/v1/signup", {
+        username,
+        password,
+      });
+
+      navigate("/signin");
+    } catch (error) {
+      window.alert("Username not available");
+    } finally {
+      setloading(false);
+    }
+
   };
+
   return (
     <div className="flex items-center justify-center h-screen w-screen  flex-row bg-gray-500/70">
       <div className="bg-white rounded-xl  h-80 w-70">
-        <div className="text-2xl justify-center  flex p-5">Signup</div>
+        <div className="text-2xl justify-center  flex p-5">Sign up</div>
         <InputBox placeholder="Enter username" reference={usernameRef} />
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title={submitting ? "Signing up..." : "Sign up"}
+
+            title={loading ? "loading..." : "Sign up"}
             variant="primary"
-            loading={submitting}
+            loading={loading}
+
             onClick={signup}
           />
         </div>
         <div className="flex justify-center">
-          <div className="">Already an User? </div>
+          <div className=""> New here? </div>
           <Link
-            to={"/signin"}
+            to={"/signup"}
             className="text-blue-600 pl-2 underline-offset-1 underline"
           >
-            Signin
+            Signup
           </Link>
         </div>
       </div>

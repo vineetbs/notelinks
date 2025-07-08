@@ -72,8 +72,8 @@ export const ShareContent = ({ open, onClose }: ContentProp) => {
     <div>
       {open && (
         <div className="w-screen h-screen top-0 right-0 bg-slate-700/80 fixed flex flex-row min-h-screen justify-center items-center">
-          <div className="[background-color:var(--color-secbg)] w-94 h-96 rounded-xl">
-            <div className="flex justify-between my-auto pt-4">
+          <div className="[background-color:var(--color-secbg)] w-94 h-68 rounded-xl">
+            <div className="flex justify-between  pt-4">
               <div className="text-xl font-semibold mx-auto my-auto">
                 Share Your Links
               </div>
@@ -86,26 +86,18 @@ export const ShareContent = ({ open, onClose }: ContentProp) => {
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
               <div className="font-thin  flex items-center justify-center">
-                <div className="w-92 h-12 flex items-center justify-center border-2 rounded-xl my-8 bg-white ">
+                <div className="w-92 h-12 flex items-center justify-center border-2 border-gray-500 rounded-xl my-8 bg-white ">
                   {`${FrontendUrl}/note/?id=${shareLink}`}
                 </div>
               </div>
-              <div className="flex items-center justify-center p-2 ">
+              <div className="flex items-center justify-center ">
                 <Button
-                  variant="secondary"
+                  variant="primary"
                   title="Copy link"
                   onClick={() => {
                     copyLink();
                   }}
                 />
-                {/* <Button
-                  variant="primary"
-                  title="Delete link"
-                  onClick={async () => {
-                    await deleteLink();
-                    onClose();
-                  }}
-                /> */}
               </div>
             </div>
           </div>
