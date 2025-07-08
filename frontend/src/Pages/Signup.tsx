@@ -27,7 +27,6 @@ export const Signup = () => {
     } finally {
       setloading(false);
     }
-
   };
 
   return (
@@ -38,21 +37,19 @@ export const Signup = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-
             title={loading ? "loading..." : "Sign up"}
             variant="primary"
             loading={loading}
-
             onClick={signup}
           />
         </div>
         <div className="flex justify-center">
           <div className=""> New here? </div>
           <Link
-            to={"/signup"}
+            to={"/signin"}
             className="text-blue-600 pl-2 underline-offset-1 underline"
           >
-            Signup
+            Signin
           </Link>
         </div>
       </div>
