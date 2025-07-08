@@ -9,6 +9,7 @@ export const Signup = () => {
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+
   const [loading, setloading] = useState(false);
   const signup = async () => {
     setloading(true);
@@ -26,6 +27,7 @@ export const Signup = () => {
     } finally {
       setloading(false);
     }
+
   };
 
   return (
@@ -36,9 +38,11 @@ export const Signup = () => {
         <InputBox placeholder="Enter password" reference={passwordRef} />
         <div className="flex justify-center p-4">
           <Button
-            title={loading ? "loading..." : "Sign in"}
+
+            title={loading ? "loading..." : "Sign up"}
             variant="primary"
             loading={loading}
+
             onClick={signup}
           />
         </div>
